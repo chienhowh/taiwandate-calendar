@@ -9,13 +9,24 @@
     <div class="header-box">
       <button (click)="prevYear()">&lt;&lt;</button>
       <button (click)="prevMth()">&lt;</button>
-      <span class="header-label">{{ headerDate | date:'MMM y' }}</span>
+      <span class="header-label">{{ headerDate | date: "MMM y" }}</span>
       <button (click)="nextMth()">&gt;</button>
       <button (click)="nextYear()">&gt;&gt;</button>
     </div>
     <!-- choose date start -->
+    <div class="weeks">
+
+      <div class="week" *ngFor="let item of weekZh">{{ item }}</div>
+    </div>
     <div class="days">
-      <div class="day" *ngFor="let item of weekZh">{{ item }}</div>
+      <div
+        class="day"
+        [class.selected]="item === headerDay"
+        (click)="selectDate($event)"
+        *ngFor="let item of days"
+      >
+        {{ item }}
+      </div>
     </div>
   </div>
 </div>
