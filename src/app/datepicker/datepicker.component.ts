@@ -8,9 +8,9 @@ import { Observable, timer } from 'rxjs';
   styleUrls: ['./datepicker.component.scss']
 })
 export class DatepickerComponent implements OnInit {
-
+  /** template 顯示都用timestamp 操作*/
   @ViewChild('dates') dates: ElementRef;
-  @Input() taiwanDate= true;
+  @Input() taiwanDate = true;
   @Input() numberOnly = true;
 
 
@@ -121,7 +121,13 @@ export class DatepickerComponent implements OnInit {
    */
   selectDate(timestamp: number) {
     this.selected_date = timestamp;
+    this.today = moment(timestamp);
     this.dates.nativeElement.classList.remove('active');
   }
 
+
+  selectToday() {
+    const timestamp = new Date().valueOf()
+    this.selectDate(timestamp);
+  }
 }

@@ -4,8 +4,8 @@
     <!-- <ng-container>
       {{ selected_date | date: "MMM d, y" }}
     </ng-container> -->
-    <ng-container >
-      {{ selected_date | taiwanDate: 'selected':numberOnly }}
+    <ng-container>
+      {{ selected_date | taiwanDate: "selected":numberOnly }}
     </ng-container>
   </div>
   <!-- calendar start -->
@@ -15,7 +15,7 @@
       <button (click)="prevYear()">&lt;&lt;</button>
       <button (click)="prevMth()">&lt;</button>
       <span class="header-label">{{
-        headerDate | taiwanDate: 'header':numberOnly
+        headerDate | taiwanDate: "header":numberOnly
       }}</span>
       <button (click)="nextMth()">&gt;</button>
       <button (click)="nextYear()">&gt;&gt;</button>
@@ -34,5 +34,8 @@
         {{ item | date: "d" }}
       </div>
     </div>
+    <!-- today start -->
+    <div class="today" (click)="selectToday()">今天</div>
   </div>
+  <!-- calendar end -->
 </div>
