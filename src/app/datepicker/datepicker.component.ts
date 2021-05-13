@@ -99,11 +99,9 @@ export class DatepickerComponent implements OnInit {
       const date = endDay.clone().add(i + 1, 'd').valueOf();
       this.days.push(date);
     }
-    console.log(this.days);
-
   }
 
-  showYear(){
+  showYear() {
 
   }
 
@@ -117,8 +115,14 @@ export class DatepickerComponent implements OnInit {
     return mth === todayMth ? true : false;
   }
 
+  presentDate(timestamp: number) {
+    const date = this.today.format("MM-DD-YYYY");
+    const today = moment(timestamp).format("MM-DD-YYYY");
+    return date === today;
+  }
+
   /**
-   *
+   * 選取日期
    */
   selectDate(timestamp: number) {
     this.selected_date = timestamp;
@@ -126,7 +130,7 @@ export class DatepickerComponent implements OnInit {
     this.dates.nativeElement.classList.remove('active');
   }
 
-
+  /** 直接選今天 */
   selectToday() {
     const timestamp = new Date().valueOf()
     this.selectDate(timestamp);

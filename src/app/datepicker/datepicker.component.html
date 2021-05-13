@@ -31,6 +31,7 @@
           (click)="selectDate(item)"
           *ngFor="let item of days"
           [class.not-present]="!presentMth(item)"
+          [class.selected]="presentDate(item)"
         >
           {{ item | date: "d" }}
         </div>
