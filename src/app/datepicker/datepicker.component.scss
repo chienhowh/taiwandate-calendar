@@ -1,0 +1,49 @@
+$primay-color: blue;
+
+.date-picker {
+  width: 100%;
+  max-width: 200px;
+  position: relative;
+}
+
+.date-picker:hover {
+  outline: 1px solid $primay-color;
+}
+// display format
+.selected-date {
+}
+
+// popout modal start
+.dates {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  &.active {
+    display: block;
+  }
+}
+//header start
+.header-box {
+  display: flex;
+}
+
+.header-label {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+//calendar start
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.day{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

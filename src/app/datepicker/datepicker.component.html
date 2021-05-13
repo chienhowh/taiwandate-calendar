@@ -1,0 +1,21 @@
+<div class="date-picker" #date_picker>
+  <!-- 日期format -->
+  <div class="selected-date" (click)="toggleCalendar()">
+    {{ selected_date | date: "MMM, y" }}
+  </div>
+  <!-- calendar start -->
+  <div class="dates" #dates>
+    <!-- header start -->
+    <div class="header-box">
+      <button (click)="prevYear()">&lt;&lt;</button>
+      <button (click)="prevMth()">&lt;</button>
+      <span class="header-label">{{ headerDate | date:'MMM y' }}</span>
+      <button (click)="nextMth()">&gt;</button>
+      <button (click)="nextYear()">&gt;&gt;</button>
+    </div>
+    <!-- choose date start -->
+    <div class="days">
+      <div class="day" *ngFor="let item of weekZh">{{ item }}</div>
+    </div>
+  </div>
+</div>
