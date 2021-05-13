@@ -37,17 +37,23 @@ $primay-color: blue;
 }
 
 //calendar start
-.weeks,.days {
+.weeks,
+.days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
 }
 
-.week,.day{
+.week,
+.day {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.day.selected{
+.day.not-present {
+  color: #aaa;
+}
+
+.day.selected {
   outline: 1px solid $primay-color;
 }

@@ -1,7 +1,12 @@
 <div class="date-picker" #date_picker>
   <!-- 日期format -->
   <div class="selected-date" (click)="toggleCalendar()">
-    {{ selected_date | date: "MMM, y" }}
+    <!-- <ng-container>
+      {{ selected_date | date: "MMM d, y" }}
+    </ng-container> -->
+    <ng-container >
+      {{ selected_date | taiwanDate: 'selected':numberOnly }}
+    </ng-container>
   </div>
   <!-- calendar start -->
   <div class="dates" #dates>
@@ -9,23 +14,24 @@
     <div class="header-box">
       <button (click)="prevYear()">&lt;&lt;</button>
       <button (click)="prevMth()">&lt;</button>
-      <span class="header-label">{{ headerDate | date: "MMM y" }}</span>
+      <span class="header-label">{{
+        headerDate | taiwanDate: 'header':numberOnly
+      }}</span>
       <button (click)="nextMth()">&gt;</button>
       <button (click)="nextYear()">&gt;&gt;</button>
     </div>
     <!-- choose date start -->
     <div class="weeks">
-
       <div class="week" *ngFor="let item of weekZh">{{ item }}</div>
     </div>
     <div class="days">
       <div
         class="day"
-        [class.selected]="item === headerDay"
-        (click)="selectDate($event)"
+        (click)="selectDate(item)"
         *ngFor="let item of days"
+        [class.not-present]="!presentMth(item)"
       >
-        {{ item }}
+        {{ item | date: "d" }}
       </div>
     </div>
   </div>

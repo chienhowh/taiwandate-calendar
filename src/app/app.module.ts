@@ -20,12 +20,14 @@ registerLocaleData(zh);
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { CalendarComponent } from './datepicker/calendar/calendar.component';
+import { TaiwanDatePipe } from './taiwan-date.pipe';
 @NgModule({
   declarations: [
     AppComponent,
     TimeComponent,
     DatepickerComponent,
-    CalendarComponent
+    CalendarComponent,
+    TaiwanDatePipe
   ],
   imports: [
     BrowserModule,
