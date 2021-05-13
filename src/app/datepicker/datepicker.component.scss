@@ -1,4 +1,5 @@
-$primay-color: blue;
+$primay-color: #1890ff;
+$secondary-color: #d9d9d9;
 
 @mixin flex-center {
   display: flex;
@@ -10,11 +11,12 @@ $primay-color: blue;
   width: 100%;
   max-width: 200px;
   position: relative;
+  border: 1px solid $secondary-color;
+  &:hover {
+    border: 1px solid $primay-color;
+  }
 }
 
-.date-picker:hover {
-  outline: 1px solid $primay-color;
-}
 // display format
 .selected-date {
 }
@@ -26,6 +28,7 @@ $primay-color: blue;
   left: 0;
   right: 0;
   top: 100%;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   &.active {
     display: block;
   }
@@ -33,11 +36,21 @@ $primay-color: blue;
 //header start
 .header-box {
   display: flex;
+  border: 1px solid $secondary-color;
 }
 
 .header-label {
   flex: 1;
   @include flex-center();
+}
+
+.arrow-btn {
+  width: 24px;
+  text-align: center;
+  color: $secondary-color;
+  &:hover {
+    color: #000;
+  }
 }
 
 //calendar start
@@ -53,7 +66,7 @@ $primay-color: blue;
 }
 
 .day.not-present {
-  color: #aaa;
+  color: $secondary-color;
 }
 
 .day.selected {
@@ -61,7 +74,8 @@ $primay-color: blue;
 }
 
 // 底部今天
-.today{
+.today {
   @include flex-center();
+  border-top: 1px solid $secondary-color;
   color: $primay-color;
 }

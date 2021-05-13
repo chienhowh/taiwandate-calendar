@@ -43,27 +43,27 @@ export class DatepickerComponent implements OnInit {
   prevYear() {
     this.today.subtract(1, 'y');// format才能操作
     this.headerDate = this.today.valueOf();
-    this.calendarShow();
+    this.showCalendar();
 
   }
 
   prevMth() {
     this.today.subtract(1, 'M');
     this.headerDate = this.today.valueOf();
-    this.calendarShow();
+    this.showCalendar();
 
   }
   nextYear() {
     this.today.add(1, 'y');
     this.headerDate = this.today.valueOf();
-    this.calendarShow();
+    this.showCalendar();
 
   }
 
   nextMth() {
     this.today.add(1, 'M');
     this.headerDate = this.today.valueOf();
-    this.calendarShow();
+    this.showCalendar();
 
   }
   // header end
@@ -73,14 +73,11 @@ export class DatepickerComponent implements OnInit {
   toggleCalendar() {
     this.dates.nativeElement.classList.toggle('active');// 顯示日歷
     this.calendarDay = this.today.clone().add(0, 'd');
-    console.log(this.today);
-    console.log(this.calendarDay);
-    this.calendarShow();
-
+    this.showCalendar();
   }
 
   /** 月曆日期 */
-  calendarShow() {
+  showCalendar() {
     const startDay = this.today.clone().startOf('month'); // 當月起始日期
     const endDay = this.today.clone().endOf('month');// 當月終止日期
     const days = this.today.daysInMonth(); // 當月天數
@@ -103,6 +100,10 @@ export class DatepickerComponent implements OnInit {
       this.days.push(date);
     }
     console.log(this.days);
+
+  }
+
+  showYear(){
 
   }
 

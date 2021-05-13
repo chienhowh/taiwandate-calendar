@@ -10,30 +10,36 @@
   </div>
   <!-- calendar start -->
   <div class="dates" #dates>
-    <!-- header start -->
-    <div class="header-box">
-      <button (click)="prevYear()">&lt;&lt;</button>
-      <button (click)="prevMth()">&lt;</button>
-      <span class="header-label">{{
-        headerDate | taiwanDate: "header":numberOnly
-      }}</span>
-      <button (click)="nextMth()">&gt;</button>
-      <button (click)="nextYear()">&gt;&gt;</button>
-    </div>
-    <!-- choose date start -->
-    <div class="weeks">
-      <div class="week" *ngFor="let item of weekZh">{{ item }}</div>
-    </div>
-    <div class="days">
-      <div
-        class="day"
-        (click)="selectDate(item)"
-        *ngFor="let item of days"
-        [class.not-present]="!presentMth(item)"
-      >
-        {{ item | date: "d" }}
+    <ng-container>
+      <!-- header start -->
+      <div class="header-box">
+        <span class="arrow-btn" (click)="prevYear()">&lt;&lt;</span >
+        <span class="arrow-btn" (click)="prevMth()">&lt;</span >
+        <span class="header-label" (click)="showYear()">{{
+          headerDate | taiwanDate: "header":numberOnly
+        }}</span>
+        <span class="arrow-btn" (click)="nextMth()">&gt;</span >
+        <span class="arrow-btn" (click)="nextYear()">&gt;&gt;</span >
       </div>
-    </div>
+      <!-- choose date start -->
+      <div class="weeks">
+        <div class="week" *ngFor="let item of weekZh">{{ item }}</div>
+      </div>
+      <div class="days">
+        <div
+          class="day"
+          (click)="selectDate(item)"
+          *ngFor="let item of days"
+          [class.not-present]="!presentMth(item)"
+        >
+          {{ item | date: "d" }}
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container>
+
+    </ng-container>
     <!-- today start -->
     <div class="today" (click)="selectToday()">今天</div>
   </div>
