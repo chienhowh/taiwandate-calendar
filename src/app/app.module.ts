@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { zh_TW } from 'ng-zorro-antd/i18n';
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { TimeComponent } from './time/time.component';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
@@ -31,6 +31,7 @@ import { TaiwanDatePipe } from './taiwan-date.pipe';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,

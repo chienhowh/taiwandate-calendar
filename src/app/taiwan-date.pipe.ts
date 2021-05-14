@@ -6,7 +6,7 @@ import * as moment from 'moment';
 })
 export class TaiwanDatePipe implements PipeTransform {
 
-  transform(timestamp: number, header: string, numberOnly: boolean): string {
+  transform(timestamp: number, mode: string, numberOnly: boolean): string {
     // 年份處理
     const year = moment(timestamp).year() - 1911;
     // 月份處理
@@ -14,8 +14,14 @@ export class TaiwanDatePipe implements PipeTransform {
     // 日期處理
     const date = moment(timestamp).date();
     if (!timestamp) { return `－`; }
-    switch (header) {
-      case 'header':
+    switch (mode) {
+      case 'Y':
+        if (numberOnly) {
+          return `${year}`;
+        } else {
+          return `民國${year}年`;
+        }
+      case 'YM':
         if (numberOnly) {
           // 月份個位數要補0
           if (month <= 9) {
@@ -23,11 +29,12 @@ export class TaiwanDatePipe implements PipeTransform {
           } else {
             return `${year}/${month}`;
           }
-        } return `民國${year}年${month}月`;
-      case 'selected':
+        }
+        return `民國${year}年${month}月`;
+      case 'YMD':
         if (numberOnly) {
           // 月份個位數要補0
-          return `${year}/${month <= 9 ? '0' + month : month}/${date <= 9 ? '0' + date : date}`
+          return `${year}/${month <= 9 ? '0' + month : month}/${date <= 9 ? '0' + date : date}`;
         }
         return `民國${year} 年${month} 月${date} 日`;
       // 除錯
