@@ -1,7 +1,5 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import * as moment from 'moment';
-import { NzTransitionPatchDirective } from 'ng-zorro-antd/core/transition-patch/transition-patch.directive';
-import { Observable, timer } from 'rxjs';
 
 @Component({
   selector: 'app-datepicker',
@@ -9,7 +7,7 @@ import { Observable, timer } from 'rxjs';
   styleUrls: ['./datepicker.component.scss']
 })
 export class DatepickerComponent implements OnInit {
-  /** template 顯示都用timestamp 操作*/
+  /** template 顯示都用timestamp 操作 */
   /** 會拿到當天日期的起始時間 不是當下要注意 */
   @ViewChild('dates') dates: ElementRef;
   @Input() taiwanDate = true;
@@ -35,6 +33,9 @@ export class DatepickerComponent implements OnInit {
   // 中文週
   weekZh = ['日', 'ㄧ', '二', '三', '四', '五', '六'];
 
+  @HostListener('document:click') hideCaledar() {
+    this.dates.nativeElement.classList.remove('active');
+  }
   constructor(
   ) { }
 
@@ -87,7 +88,8 @@ export class DatepickerComponent implements OnInit {
 
 
 
-  toggleCalendar() {
+  toggleCalendar(event) {
+    event.stopPropagation();
     this.dates.nativeElement.classList.toggle('active'); // 顯示日歷
     this.datesCalendar();
   }
