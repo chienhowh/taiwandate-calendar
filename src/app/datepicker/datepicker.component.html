@@ -15,13 +15,13 @@
       <ng-container *ngSwitchCase="'date'">
         <!-- header start -->
         <div class="header-box">
-          <span class="arrow-btn" (click)="prevYear()">&lt;&lt;</span>
-          <span class="arrow-btn" (click)="prevMth()">&lt;</span>
-          <span class="header-label" (click)="showYear()">{{
+          <span class="arrow-btn" (click)="prevYear($event)">&lt;&lt;</span>
+          <span class="arrow-btn" (click)="prevMth($event)">&lt;</span>
+          <span class="header-label" (click)="showYear($event)">{{
             headerDate | taiwanDate: "YM":numberOnly
           }}</span>
-          <span class="arrow-btn" (click)="nextMth()">&gt;</span>
-          <span class="arrow-btn" (click)="nextYear()">&gt;&gt;</span>
+          <span class="arrow-btn" (click)="nextMth($event)">&gt;</span>
+          <span class="arrow-btn" (click)="nextYear($event)">&gt;&gt;</span>
         </div>
         <!-- choose date start -->
         <div class="weeks">
@@ -30,7 +30,7 @@
         <div class="days">
           <div
             class="day"
-            (click)="selectDate(item)"
+            (click)="selectDate($event, item)"
             *ngFor="let item of days"
             [class.not-present]="!presentMth(item)"
             [class.selected]="presentDate(item)"
@@ -43,18 +43,18 @@
       <!-- 年份選擇 start -->
       <ng-container *ngSwitchCase="'year'">
         <div class="header-box">
-          <span class="arrow-btn" (click)="prevDecade()">&lt;</span>
-          <span class="header-label" (click)="showYear()">{{
+          <span class="arrow-btn" (click)="prevDecade($event)">&lt;</span>
+          <span class="header-label" (click)="showYear($event)">{{
             headerDate | taiwanDate: "Y":numberOnly
           }}</span>
-          <span class="arrow-btn" (click)="nextDecade()">&gt;</span>
+          <span class="arrow-btn" (click)="nextDecade($event)">&gt;</span>
         </div>
         <!-- choose year start -->
         <div class="years">
           <div
             class="year"
             *ngFor="let year of years"
-            (click)="selectYear(year)"
+            (click)="selectYear($event, year)"
           >
             {{ year | taiwanDate: "Y":true }}
           </div>
@@ -64,8 +64,9 @@
       <!-- 年份選擇 end -->
     </ng-container>
     <!-- today start -->
-    <div class="today" (click)="selectToday()">今天</div>
+    <div class="today" (click)="selectToday($event)">今天</div>
     <!-- today end -->
   </div>
   <!-- calendar end -->
 </div>
+<!-- {{finaltime}} -->

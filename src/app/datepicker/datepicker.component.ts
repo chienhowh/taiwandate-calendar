@@ -19,6 +19,9 @@ export class DatepickerComponent implements OnInit {
   /** 今天日期 for moment 運算，不是最後選定日 */
   today = moment();
 
+  /** 選擇時間與起始日差距 */
+  diffTime = this.today.diff(this.today.clone().startOf('d'));
+
   /** 日 */
   days = [];
   /** 年 */
@@ -40,32 +43,38 @@ export class DatepickerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.today);
   }
 
-
+  get finaltime() {
+    // TODO: 最後送出記得加回時間差(看有沒有需要)
+    return moment(this.selected_date + this.diffTime).format();
+  }
   // header start
-  prevYear() {
+  prevYear(event: Event) {
+    event.stopPropagation();
     this.today.subtract(1, 'y');// format才能操作
     this.headerDate = this.today.valueOf();
     this.datesCalendar();
 
   }
 
-  prevMth() {
+  prevMth(event: Event) {
+    event.stopPropagation();
     this.today.subtract(1, 'M');
     this.headerDate = this.today.valueOf();
     this.datesCalendar();
 
   }
-  nextYear() {
+  nextYear(event: Event) {
+    event.stopPropagation();
     this.today.add(1, 'y');
     this.headerDate = this.today.valueOf();
     this.datesCalendar();
 
   }
 
-  nextMth() {
+  nextMth(event: Event) {
+    event.stopPropagation();
     this.today.add(1, 'M');
     this.headerDate = this.today.valueOf();
     this.datesCalendar();
@@ -78,7 +87,8 @@ export class DatepickerComponent implements OnInit {
     this.yearCalendar();
   }
 
-  nextDecade() {
+  nextDecade(event: Event) {
+    event.stopPropagation();
     this.today.add(10, 'y');
     this.headerDate = this.today.valueOf();
     this.yearCalendar();
@@ -88,7 +98,7 @@ export class DatepickerComponent implements OnInit {
 
 
 
-  toggleCalendar(event) {
+  toggleCalendar(event: Event) {
     event.stopPropagation();
     this.dates.nativeElement.classList.toggle('active'); // 顯示日歷
     this.datesCalendar();
@@ -97,7 +107,7 @@ export class DatepickerComponent implements OnInit {
   /** 產生月曆日期 */
   datesCalendar() {
     const startDay = this.today.clone().startOf('month'); // 當月起始日期
-    const endDay = this.today.clone().endOf('month'); // 當月終止日期
+    const endDay = this.today.clone().endOf('month').startOf('d'); // 當月終止日期
     const days = this.today.daysInMonth(); // 當月天數
     // days length 固定42
     this.days = [];
@@ -129,7 +139,8 @@ export class DatepickerComponent implements OnInit {
     }
   }
 
-  showYear() {
+  showYear(event: Event) {
+    event.stopPropagation();
     this.calendarMode = 'year';
     this.yearCalendar();
   }
@@ -154,14 +165,16 @@ export class DatepickerComponent implements OnInit {
   /**
    * 選取日期後，關閉日曆
    */
-  selectDate(timestamp: number) {
+  selectDate(event: Event, timestamp: number) {
+    event.stopPropagation();
     this.selected_date = timestamp;
     this.today = moment(timestamp);
     this.dates.nativeElement.classList.remove('active');
   }
 
   /** 選取年份，跳出該年份當月資訊 */
-  selectYear(timestamp: number) {
+  selectYear(event: Event, timestamp: number) {
+    event.stopPropagation();
     const diffYear = this.today.diff(timestamp, 'y');
     this.today.subtract(diffYear, 'y');
     this.headerDate = this.today.valueOf();
@@ -170,8 +183,9 @@ export class DatepickerComponent implements OnInit {
   }
 
   /** 直接選今天 */
-  selectToday() {
-    const timestamp = new Date().valueOf()
-    this.selectDate(timestamp);
+  selectToday(event: Event) {
+    event.stopPropagation();
+    const timestamp = new Date().valueOf();
+    this.selectDate(event, timestamp);
   }
 }
