@@ -8,8 +8,7 @@ $secondary-color: #d9d9d9;
 }
 
 .date-picker {
-  width: 100%;
-  max-width: 200px;
+  width: 200px;
   position: relative;
   border: 1px solid $secondary-color;
   &:hover {
@@ -18,8 +17,6 @@ $secondary-color: #d9d9d9;
 }
 
 // display format
-.selected-date {
-}
 
 // popout modal start
 .dates {
@@ -65,7 +62,7 @@ $secondary-color: #d9d9d9;
   @include flex-center();
 }
 
-.day.not-present {
+.not-present {
   color: $secondary-color;
 }
 

@@ -10,12 +10,18 @@ export class DatepickerComponent implements OnInit {
   /** template 顯示都用timestamp 操作 */
   /** 會拿到當天日期的起始時間 不是當下要注意 */
   @ViewChild('dates') dates: ElementRef;
+  //
   @Input() taiwanDate = true;
+  /** 是否顯示民國字樣 */
   @Input() numberOnly = true;
+  /** 截止日(超過此日期不能選) */
+  @Input() closeDate: moment.Moment;
 
+  /** 民國範圍年(截止) */
+  @Input() endYear = 200;
 
-  /** 日曆顯示模式 eg 年份 月份 日期 */
-  calendarMode = 'date';
+  /** 民國範圍年(起始) */
+  @Input() startYear = 0;
   /** 今天日期 for moment 運算，不是最後選定日 */
   today = moment();
 
@@ -27,7 +33,7 @@ export class DatepickerComponent implements OnInit {
   /** 年 */
   years = [];
 
-  /** header date: 預設今天 */
+  /** header show date: 預設今天 */
   headerDate = new Date().valueOf();
 
   /** 最後顯示日期 */
@@ -35,6 +41,8 @@ export class DatepickerComponent implements OnInit {
 
   // 中文週
   weekZh = ['日', 'ㄧ', '二', '三', '四', '五', '六'];
+  /** 日曆顯示模式 eg.年份、日期 */
+  calendarMode = 'date';
 
   @HostListener('document:click') hideCaledar() {
     this.dates.nativeElement.classList.remove('active');
@@ -43,6 +51,8 @@ export class DatepickerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.closeDate);
+
   }
 
   get finaltime() {
@@ -153,7 +163,24 @@ export class DatepickerComponent implements OnInit {
   presentMth(timestamp: number) {
     const todayMth = this.today.month();
     const mth = moment(timestamp).month();
-    return mth === todayMth ? true : false;
+    return mth === todayMth;
+  }
+
+  // 樣式相關 start
+  /** 是否超出截止日，超出截止日給他灰底 */
+  overCloseDate(timestamp: number): boolean {
+    if (this.closeDate) {
+      const closeDate = this.closeDate.valueOf();
+      return timestamp > closeDate;
+    }
+    return false;
+  }
+  /** 在年限裡(預設民國0-200) */
+  betweenYear(year: moment.Moment): boolean {
+    const presentyear = year.year();
+    const startYear = this.startYear + 1911;
+    const endYear = this.endYear + 1911;
+    return presentyear >= startYear && presentyear <= endYear;
   }
 
   /** 產生選中藍色框框 */
@@ -162,12 +189,16 @@ export class DatepickerComponent implements OnInit {
     const today = moment(timestamp).format('MM-DD-YYYY');
     return date === today;
   }
-
+  // 樣式相關 end
   /**
    * 選取日期後，關閉日曆
    */
   selectDate(event: Event, timestamp: number) {
     event.stopPropagation();
+    // 超出截止日，不能選
+    if (this.overCloseDate(timestamp)) {
+      return;
+    }
     this.selected_date = timestamp;
     this.headerDate = timestamp;
     this.today = moment(timestamp);
@@ -175,9 +206,12 @@ export class DatepickerComponent implements OnInit {
   }
 
   /** 選取年份，跳出該年份當月資訊 */
-  selectYear(event: Event, timestamp: number) {
+  selectYear(event: Event, momentTime: moment.Moment) {
     event.stopPropagation();
-    const diffYear = this.today.diff(timestamp, 'y');
+    // 超出年份不給選
+    if (!this.betweenYear(momentTime)) { return; }
+
+    const diffYear = this.today.diff(momentTime, 'y');
     this.today.subtract(diffYear, 'y');
     this.headerDate = this.today.valueOf();
     this.datesCalendar();
@@ -189,5 +223,6 @@ export class DatepickerComponent implements OnInit {
     event.stopPropagation();
     const timestamp = new Date().valueOf();
     this.selectDate(event, timestamp);
+    this.calendarMode = 'date';
   }
 }

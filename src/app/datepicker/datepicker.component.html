@@ -32,7 +32,7 @@
             class="day"
             (click)="selectDate($event, item)"
             *ngFor="let item of days"
-            [class.not-present]="!presentMth(item)"
+            [class.not-present]="!presentMth(item)||overCloseDate(item)"
             [class.selected]="presentDate(item)"
           >
             {{ item | date: "d" }}
@@ -55,6 +55,7 @@
             class="year"
             *ngFor="let year of years"
             (click)="selectYear($event, year)"
+            [class.not-present]="!betweenYear(year)"
           >
             {{ year | taiwanDate: "Y":true }}
           </div>

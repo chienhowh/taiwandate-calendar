@@ -1,3 +1,4 @@
+import { TaiwanDatePipe } from './taiwan-date.pipe';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -12,13 +13,13 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FlatpickrModule } from 'angularx-flatpickr';
+
 import 'flatpickr/dist/flatpickr.css';
 import { DatepickerComponent } from './datepicker/datepicker.component';
 registerLocaleData(zh);
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { TaiwanDatePipe } from './taiwan-date.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +39,6 @@ import { TaiwanDatePipe } from './taiwan-date.pipe';
     NgbModule,
     NzIconModule,
     NzInputModule
-    // FlatpickrModule.forRoot()
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_TW }],
   bootstrap: [AppComponent]
