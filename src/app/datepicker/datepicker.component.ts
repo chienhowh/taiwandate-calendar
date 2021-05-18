@@ -81,7 +81,8 @@ export class DatepickerComponent implements OnInit {
 
   }
 
-  prevDecade() {
+  prevDecade(event: Event) {
+    event.stopPropagation();
     this.today.subtract(10, 'y');
     this.headerDate = this.today.valueOf();
     this.yearCalendar();
