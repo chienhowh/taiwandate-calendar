@@ -168,6 +168,7 @@ export class DatepickerComponent implements OnInit {
   selectDate(event: Event, timestamp: number) {
     event.stopPropagation();
     this.selected_date = timestamp;
+    this.headerDate = timestamp;
     this.today = moment(timestamp);
     this.dates.nativeElement.classList.remove('active');
   }
