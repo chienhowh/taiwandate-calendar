@@ -18,10 +18,10 @@ export class DatepickerComponent implements OnInit {
   @Input() closeDate: moment.Moment;
 
   /** 民國範圍年(截止) */
-  @Input() endYear = 200;
+  @Input() rocEndYear = 200;
 
   /** 民國範圍年(起始) */
-  @Input() startYear = 0;
+  @Input() rocStartYear = 1;
   /** 今天日期 for moment 運算，不是最後選定日 */
   today = moment();
 
@@ -32,12 +32,14 @@ export class DatepickerComponent implements OnInit {
   days = [];
   /** 年 */
   years = [];
+  /** 月 */
+  months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
-  /** header show date: 預設今天 */
-  headerDate = new Date().valueOf();
 
   /** 最後顯示日期 */
-  selected_date = this.headerDate;
+  selected_date = new Date().valueOf();
+  selected_year = moment().year() - 1911;
+  selected_month = moment().month();
 
   // 中文週
   weekZh = ['日', 'ㄧ', '二', '三', '四', '五', '六'];
@@ -52,7 +54,7 @@ export class DatepickerComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.closeDate);
-
+    this.yearCalendar();
   }
 
   get finaltime() {
@@ -63,7 +65,6 @@ export class DatepickerComponent implements OnInit {
   prevYear(event: Event) {
     event.stopPropagation();
     this.today.subtract(1, 'y');// format才能操作
-    this.headerDate = this.today.valueOf();
     this.datesCalendar();
 
   }
@@ -71,14 +72,18 @@ export class DatepickerComponent implements OnInit {
   prevMth(event: Event) {
     event.stopPropagation();
     this.today.subtract(1, 'M');
-    this.headerDate = this.today.valueOf();
     this.datesCalendar();
+    if (this.selected_month === 0) {
+      this.selected_month = 11;
+      this.selected_year -= 1;
+    } else {
+      this.selected_month -= 1;
+    }
 
   }
   nextYear(event: Event) {
     event.stopPropagation();
     this.today.add(1, 'y');
-    this.headerDate = this.today.valueOf();
     this.datesCalendar();
 
   }
@@ -86,22 +91,26 @@ export class DatepickerComponent implements OnInit {
   nextMth(event: Event) {
     event.stopPropagation();
     this.today.add(1, 'M');
-    this.headerDate = this.today.valueOf();
     this.datesCalendar();
-
+    if (this.selected_month === 11) {
+      this.selected_month = 0;
+      this.selected_year += 1;
+    } else {
+      this.selected_month += 1;
+    }
   }
 
   prevDecade(event: Event) {
     event.stopPropagation();
     this.today.subtract(10, 'y');
-    this.headerDate = this.today.valueOf();
+
     this.yearCalendar();
   }
 
   nextDecade(event: Event) {
     event.stopPropagation();
     this.today.add(10, 'y');
-    this.headerDate = this.today.valueOf();
+
     this.yearCalendar();
 
   }
@@ -142,11 +151,25 @@ export class DatepickerComponent implements OnInit {
 
   /** 產生年份 */
   yearCalendar() {
-    this.years = [];
-    const startYear = this.today.clone().subtract(1, 'y');
-    this.years.push(startYear, this.today.clone());
-    for (let i = 0; i < 10; i++) {
-      this.years.push(this.today.clone().add(i + 1, 'y'));
+    // const years = [];
+    // const presentYear = this.today.clone().year();
+    // 頭
+    // if (presentYear < this.rocStartYear + 1911 + 12) {
+    //   const startYear = this.today.clone().startOf('d').subtract((this.rocStartYear + 1911), 'y');
+    //   for (let i = 0; i < 12; i++) {
+    //     years.push(startYear.clone().add(i), 'y');
+    //   }
+    // } else {
+    // 正常
+    // const startYear = this.today.clone().startOf('d').subtract(1, 'y');
+    // years.push(startYear, this.today.clone());
+    // for (let i = 0; i < 10; i++) {
+    //   years.push(this.today.clone().add(i + 1, 'y'));
+    // }
+    // // }
+    // this.years = years;
+    for (let i = this.rocStartYear; i < this.rocEndYear; i++) {
+      this.years.push(i);
     }
   }
 
@@ -175,13 +198,6 @@ export class DatepickerComponent implements OnInit {
     }
     return false;
   }
-  /** 在年限裡(預設民國0-200) */
-  betweenYear(year: moment.Moment): boolean {
-    const presentyear = year.year();
-    const startYear = this.startYear + 1911;
-    const endYear = this.endYear + 1911;
-    return presentyear >= startYear && presentyear <= endYear;
-  }
 
   /** 產生選中藍色框框 */
   presentDate(timestamp: number) {
@@ -200,23 +216,29 @@ export class DatepickerComponent implements OnInit {
       return;
     }
     this.selected_date = timestamp;
-    this.headerDate = timestamp;
     this.today = moment(timestamp);
     this.dates.nativeElement.classList.remove('active');
   }
 
   /** 選取年份，跳出該年份當月資訊 */
-  selectYear(event: Event, momentTime: moment.Moment) {
-    event.stopPropagation();
-    // 超出年份不給選
-    if (!this.betweenYear(momentTime)) { return; }
-
-    const diffYear = this.today.diff(momentTime, 'y');
-    this.today.subtract(diffYear, 'y');
-    this.headerDate = this.today.valueOf();
+  selectYear(ev: Event) {
+    ev.stopPropagation();
+    const year = +(ev.target as HTMLSelectElement).value + 1911;
+    const diffyear = this.today.year() - year;
+    this.today.subtract(diffyear, 'year');
+    this.selected_year = this.today.year() - 1911;
     this.datesCalendar();
-    this.calendarMode = 'date'; // 切回日期頁
   }
+
+  selectMonth(ev: Event) {
+    ev.stopPropagation();
+    const month = +(ev.target as HTMLSelectElement).value;
+    const diffmonth = this.today.month() - month;
+    this.today.subtract(diffmonth, 'M');
+    this.selected_month = this.today.month();
+    this.datesCalendar();
+  }
+
 
   /** 直接選今天 */
   selectToday(event: Event) {
@@ -224,5 +246,8 @@ export class DatepickerComponent implements OnInit {
     const timestamp = new Date().valueOf();
     this.selectDate(event, timestamp);
     this.calendarMode = 'date';
+  }
+  stopPropagation(event: Event) {
+    event.stopPropagation();
   }
 }

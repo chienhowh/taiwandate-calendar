@@ -6,7 +6,9 @@ import * as moment from 'moment';
 })
 export class TaiwanDatePipe implements PipeTransform {
 
-  transform(timestamp: number, mode: string, numberOnly: boolean): string {
+  transform(timestamp: number | moment.Moment, mode: string, numberOnly: boolean): string {
+    console.log(timestamp);
+
     // 年份處理
     const year = moment(timestamp).year() - 1911;
     // 月份處理

@@ -34,6 +34,8 @@ $secondary-color: #d9d9d9;
 .header-box {
   display: flex;
   border: 1px solid $secondary-color;
+  justify-content: space-around;
+  padding: 4px 0;
 }
 
 .header-label {
@@ -42,9 +44,10 @@ $secondary-color: #d9d9d9;
 }
 
 .arrow-btn {
-  width: 24px;
+  width: 16px;
   text-align: center;
   color: $secondary-color;
+  display: inline-block;
   &:hover {
     color: #000;
   }
@@ -58,7 +61,12 @@ $secondary-color: #d9d9d9;
 }
 
 .week,
-.day,.year {
+.day {
+  @include flex-center();
+}
+
+.years,
+.months {
   @include flex-center();
 }
 
@@ -69,17 +77,6 @@ $secondary-color: #d9d9d9;
 .day.selected {
   background-color: $primay-color;
   color: #fff;
-}
-
-
-.years{
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-}
-
-.year{
-  padding-top: 8px;
-  padding-bottom: 6px;
 }
 
 // 底部今天
