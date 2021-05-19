@@ -44,6 +44,7 @@ $secondary-color: #d9d9d9;
 }
 
 .arrow-btn {
+  cursor: pointer;
   width: 16px;
   text-align: center;
   color: $secondary-color;
@@ -65,12 +66,18 @@ $secondary-color: #d9d9d9;
   @include flex-center();
 }
 
+.day,
+.year {
+  cursor: pointer;
+}
+
 .years,
 .months {
   @include flex-center();
 }
 
 .not-present {
+  cursor: not-allowed;
   color: $secondary-color;
 }
 

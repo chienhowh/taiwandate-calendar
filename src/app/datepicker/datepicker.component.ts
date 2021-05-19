@@ -1,10 +1,18 @@
-import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import * as moment from 'moment';
 
 @Component({
   selector: 'app-datepicker',
   templateUrl: './datepicker.component.html',
-  styleUrls: ['./datepicker.component.scss']
+  styleUrls: ['./datepicker.component.scss'],
 })
 export class DatepickerComponent implements OnInit {
   /** template 顯示都用timestamp 操作 */
@@ -35,7 +43,6 @@ export class DatepickerComponent implements OnInit {
   /** 月 */
   months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
-
   /** 最後顯示日期 */
   selected_date = new Date().valueOf();
   selected_year = moment().year() - 1911;
@@ -49,8 +56,7 @@ export class DatepickerComponent implements OnInit {
   @HostListener('document:click') hideCaledar() {
     this.dates.nativeElement.classList.remove('active');
   }
-  constructor(
-  ) { }
+  constructor() {}
 
   ngOnInit(): void {
     console.log(this.closeDate);
@@ -64,9 +70,8 @@ export class DatepickerComponent implements OnInit {
   // header start
   prevYear(event: Event) {
     event.stopPropagation();
-    this.today.subtract(1, 'y');// format才能操作
+    this.today.subtract(1, 'y'); // format才能操作
     this.datesCalendar();
-
   }
 
   prevMth(event: Event) {
@@ -79,13 +84,11 @@ export class DatepickerComponent implements OnInit {
     } else {
       this.selected_month -= 1;
     }
-
   }
   nextYear(event: Event) {
     event.stopPropagation();
     this.today.add(1, 'y');
     this.datesCalendar();
-
   }
 
   nextMth(event: Event) {
@@ -112,11 +115,8 @@ export class DatepickerComponent implements OnInit {
     this.today.add(10, 'y');
 
     this.yearCalendar();
-
   }
   // header end
-
-
 
   toggleCalendar(event: Event) {
     event.stopPropagation();
@@ -133,7 +133,10 @@ export class DatepickerComponent implements OnInit {
     this.days = [];
     // 加入前一個月的底，startDay.day()===當月第一天是星期幾
     for (let i = 0; i < startDay.day(); i++) {
-      const date = startDay.clone().subtract(startDay.day() - i, 'd').valueOf();
+      const date = startDay
+        .clone()
+        .subtract(startDay.day() - i, 'd')
+        .valueOf();
       this.days.push(date);
     }
     // 當月日期
@@ -144,7 +147,10 @@ export class DatepickerComponent implements OnInit {
     // 加入後一個月的頭
     const lengthLeft = this.days.length;
     for (let i = 0; i < 42 - lengthLeft; i++) {
-      const date = endDay.clone().add(i + 1, 'd').valueOf();
+      const date = endDay
+        .clone()
+        .add(i + 1, 'd')
+        .valueOf();
       this.days.push(date);
     }
   }
@@ -215,6 +221,11 @@ export class DatepickerComponent implements OnInit {
     if (this.overCloseDate(timestamp)) {
       return;
     }
+    // 非當前選擇月份，不能選
+    const mth = moment(timestamp).month();
+    if (mth !== this.selected_month) {
+      return;
+    }
     this.selected_date = timestamp;
     this.today = moment(timestamp);
     this.dates.nativeElement.classList.remove('active');
@@ -238,7 +249,6 @@ export class DatepickerComponent implements OnInit {
     this.selected_month = this.today.month();
     this.datesCalendar();
   }
-
 
   /** 直接選今天 */
   selectToday(event: Event) {
