@@ -34,8 +34,9 @@ export class DatepickerComponent implements OnInit, OnChanges {
 
   /** 民國範圍年(起始) */
   @Input() rocStartYear = 1;
-  /** 今天日期 for moment 運算，不是最後選定日 */
+  /** 可以設定預設日期 */
   @Input() startDay = new Date().valueOf();
+  /** 今天日期 for moment 運算，不是最後選定日 */
   today;
   /** 送出被選取事件 */
   @Output() outputDate = new EventEmitter<number>();
@@ -76,8 +77,11 @@ export class DatepickerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
-    console.log(changes);
-
+    const startDay = changes.startDay.currentValue;
+    this.selected_date = startDay;
+    this.today = moment(startDay);
+    // 送出選取事件
+    this.outputDate.emit(startDay);
   }
 
   // get finaltime() {
@@ -194,6 +198,7 @@ export class DatepickerComponent implements OnInit, OnChanges {
     return date === today;
   }
   // 樣式相關 end
+
   /**
    * 選取日期後，關閉日曆
    */

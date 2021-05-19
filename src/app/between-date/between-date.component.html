@@ -1,0 +1,6 @@
+<div class="between-box">
+  <app-datepicker (outputDate)="selectStartDate($event)"></app-datepicker>
+  <app-datepicker [startDay]="endDay" ></app-datepicker>
+</div>
+<button (click)="add()">+m,4</button>
+

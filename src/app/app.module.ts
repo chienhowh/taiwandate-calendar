@@ -19,12 +19,15 @@ import { DatepickerComponent } from './datepicker/datepicker.component';
 registerLocaleData(zh);
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { BetweenDateComponent } from './between-date/between-date.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @NgModule({
   declarations: [
     AppComponent,
     DatepickerComponent,
-    TaiwanDatePipe
+    TaiwanDatePipe,
+    BetweenDateComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +42,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NgbModule,
     NzIconModule,
     NzInputModule
+  ], schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_TW }],
   bootstrap: [AppComponent]
