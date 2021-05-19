@@ -1,9 +1,13 @@
+import { SimpleChanges } from '@angular/core';
 import {
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
+  OnChanges,
   OnInit,
+  Output,
   Renderer2,
   ViewChild,
 } from '@angular/core';
@@ -14,7 +18,7 @@ import * as moment from 'moment';
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss'],
 })
-export class DatepickerComponent implements OnInit {
+export class DatepickerComponent implements OnInit, OnChanges {
   /** template 顯示都用timestamp 操作 */
   /** 會拿到當天日期的起始時間 不是當下要注意 */
   @ViewChild('dates') dates: ElementRef;
@@ -31,10 +35,12 @@ export class DatepickerComponent implements OnInit {
   /** 民國範圍年(起始) */
   @Input() rocStartYear = 1;
   /** 今天日期 for moment 運算，不是最後選定日 */
-  today = moment();
-
+  @Input() startDay = new Date().valueOf();
+  today;
+  /** 送出被選取事件 */
+  @Output() outputDate = new EventEmitter<number>();
   /** 選擇時間與起始日差距 */
-  diffTime = this.today.diff(this.today.clone().startOf('d'));
+  // diffTime = this.today.diff(this.today.clone().startOf('d'));
 
   /** 日 */
   days = [];
@@ -44,9 +50,9 @@ export class DatepickerComponent implements OnInit {
   months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
   /** 最後顯示日期 */
-  selected_date = new Date().valueOf();
-  selected_year = moment().year() - 1911;
-  selected_month = moment().month();
+  selected_date: number;
+  selected_year: number;
+  selected_month: number;
 
   // 中文週
   weekZh = ['日', 'ㄧ', '二', '三', '四', '五', '六'];
@@ -56,17 +62,28 @@ export class DatepickerComponent implements OnInit {
   @HostListener('document:click') hideCaledar() {
     this.dates.nativeElement.classList.remove('active');
   }
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
-    console.log(this.closeDate);
+    this.today = moment(this.startDay).startOf('d');
+    this.selected_date = this.today.valueOf();
+    this.selected_year = this.today.year() - 1911;
+    this.selected_month = this.today.month();
     this.yearCalendar();
+
   }
 
-  get finaltime() {
-    // TODO: 最後送出記得加回時間差(看有沒有需要)
-    return moment(this.selected_date + this.diffTime).format();
+  ngOnChanges(changes: SimpleChanges): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+    console.log(changes);
+
   }
+
+  // get finaltime() {
+  //   // TODO: 最後送出記得加回時間差(看有沒有需要)
+  //   return moment(this.selected_date + this.diffTime).format();
+  // }
   // header start
   prevYear(event: Event) {
     event.stopPropagation();
@@ -103,19 +120,6 @@ export class DatepickerComponent implements OnInit {
     }
   }
 
-  prevDecade(event: Event) {
-    event.stopPropagation();
-    this.today.subtract(10, 'y');
-
-    this.yearCalendar();
-  }
-
-  nextDecade(event: Event) {
-    event.stopPropagation();
-    this.today.add(10, 'y');
-
-    this.yearCalendar();
-  }
   // header end
 
   toggleCalendar(event: Event) {
@@ -157,33 +161,11 @@ export class DatepickerComponent implements OnInit {
 
   /** 產生年份 */
   yearCalendar() {
-    // const years = [];
-    // const presentYear = this.today.clone().year();
-    // 頭
-    // if (presentYear < this.rocStartYear + 1911 + 12) {
-    //   const startYear = this.today.clone().startOf('d').subtract((this.rocStartYear + 1911), 'y');
-    //   for (let i = 0; i < 12; i++) {
-    //     years.push(startYear.clone().add(i), 'y');
-    //   }
-    // } else {
-    // 正常
-    // const startYear = this.today.clone().startOf('d').subtract(1, 'y');
-    // years.push(startYear, this.today.clone());
-    // for (let i = 0; i < 10; i++) {
-    //   years.push(this.today.clone().add(i + 1, 'y'));
-    // }
-    // // }
-    // this.years = years;
     for (let i = this.rocStartYear; i < this.rocEndYear; i++) {
       this.years.push(i);
     }
   }
 
-  showYear(event: Event) {
-    event.stopPropagation();
-    this.calendarMode = 'year';
-    this.yearCalendar();
-  }
 
   /**
    * 是否在當月的日期，不是的話給他灰色字體
@@ -229,6 +211,8 @@ export class DatepickerComponent implements OnInit {
     this.selected_date = timestamp;
     this.today = moment(timestamp);
     this.dates.nativeElement.classList.remove('active');
+    // 送出選取事件
+    this.outputDate.emit(timestamp);
   }
 
   /** 選取年份，跳出該年份當月資訊 */
