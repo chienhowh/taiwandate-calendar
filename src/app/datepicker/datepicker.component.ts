@@ -61,10 +61,17 @@ export class DatepickerComponent implements OnInit, OnChanges {
 
   // 起迄日操作
 
-  @HostListener('document:click') hideCaledar() {
-    this.dates.nativeElement.classList.remove('active');
+  @HostListener('document:click', ['$event']) hideCaledar(event) {
+    if (!this.eRef.nativeElement.contains(event.target) &&
+      !event.target.className.includes('ant-select-item')) {
+      this.dates.nativeElement.classList.remove('active');
+    }
   }
-  constructor() { }
+
+
+  constructor(
+    private eRef: ElementRef
+  ) { }
   ngOnInit(): void {
     this.toROC = this.mode === 'ROC' ? 1911 : 0
     this.today = moment(this.startDay).startOf('d');
@@ -233,15 +240,15 @@ export class DatepickerComponent implements OnInit, OnChanges {
   selectYear(ev: Event) {
     ev.stopPropagation();
     const year = +(ev.target as HTMLSelectElement).value + this.toROC;
+
     const diffyear = this.today.year() - year;
     this.today.subtract(diffyear, 'year');
     this.selected_year = this.today.year() - this.toROC;
     this.datesCalendar();
   }
 
-  selectMonth(ev: Event) {
-    ev.stopPropagation();
-    const month = +(ev.target as HTMLSelectElement).value;
+  selectMonth(value: number) {
+    const month = +value;
     const diffmonth = this.today.month() - month;
     this.today.subtract(diffmonth, 'M');
     this.selected_month = this.today.month();
