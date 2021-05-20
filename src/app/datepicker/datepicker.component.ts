@@ -237,10 +237,8 @@ export class DatepickerComponent implements OnInit, OnChanges {
   }
 
   /** 選取年份，跳出該年份當月資訊 */
-  selectYear(ev: Event) {
-    ev.stopPropagation();
-    const year = +(ev.target as HTMLSelectElement).value + this.toROC;
-
+  selectYear(value: number) {
+    const year = +value + this.toROC;
     const diffyear = this.today.year() - year;
     this.today.subtract(diffyear, 'year');
     this.selected_year = this.today.year() - this.toROC;
