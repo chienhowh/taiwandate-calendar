@@ -19,6 +19,7 @@ import { DatepickerComponent } from './datepicker/datepicker.component';
 registerLocaleData(zh);
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { BetweenDateComponent } from './between-date/between-date.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ExampleComponent } from './example/example.component';
@@ -43,7 +44,8 @@ import { ExampleComponent } from './example/example.component';
     NzDatePickerModule,
     NgbModule,
     NzIconModule,
-    NzInputModule
+    NzInputModule,
+    NzSelectModule
   ], schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],

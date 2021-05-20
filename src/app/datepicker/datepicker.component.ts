@@ -60,10 +60,16 @@ export class DatepickerComponent implements OnInit, OnChanges {
   /** 日曆顯示模式 eg.年份、日期 */
   calendarMode = 'date';
 
-  @HostListener('document:click') hideCaledar() {
-    this.dates.nativeElement.classList.remove('active');
+  @HostListener('document:click', ['$event']) hideCaledar(event) {
+    if (!this.eRef.nativeElement.contains(event.target) &&
+      !event.target.className.includes('ant-select-item')) {
+      this.dates.nativeElement.classList.remove('active');
+    }
   }
-  constructor() { }
+
+  constructor(
+    private eRef: ElementRef
+  ) { }
 
   ngOnInit(): void {
     this.today = moment(this.startDay).startOf('d');
@@ -221,18 +227,16 @@ export class DatepickerComponent implements OnInit, OnChanges {
   }
 
   /** 選取年份，跳出該年份當月資訊 */
-  selectYear(ev: Event) {
-    ev.stopPropagation();
-    const year = +(ev.target as HTMLSelectElement).value + 1911;
+  selectYear(value: number) {
+    const year = +value + 1911;
     const diffyear = this.today.year() - year;
     this.today.subtract(diffyear, 'year');
     this.selected_year = this.today.year() - 1911;
     this.datesCalendar();
   }
 
-  selectMonth(ev: Event) {
-    ev.stopPropagation();
-    const month = +(ev.target as HTMLSelectElement).value;
+  selectMonth(value: number) {
+    const month = +value;
     const diffmonth = this.today.month() - month;
     this.today.subtract(diffmonth, 'M');
     this.selected_month = this.today.month();
