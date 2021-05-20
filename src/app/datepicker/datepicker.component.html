@@ -2,8 +2,11 @@
   <!-- 日期format -->
   <!-- 最終選定 start -->
   <div class="selected-date" (click)="toggleCalendar($event)">
-    <ng-container>
+    <ng-container *ngIf="mode === 'ROC'">
       {{ selected_date | taiwanDate: "YMD":numberOnly }}
+    </ng-container>
+    <ng-container *ngIf="mode === 'AD'">
+      {{ selected_date | date: adType }}
     </ng-container>
   </div>
   <!-- 最終選定 end -->

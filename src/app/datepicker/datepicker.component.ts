@@ -1,4 +1,3 @@
-import { SimpleChanges } from '@angular/core';
 import {
   Component,
   ElementRef,
@@ -8,7 +7,7 @@ import {
   OnChanges,
   OnInit,
   Output,
-  Renderer2,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import * as moment from 'moment';
@@ -22,18 +21,20 @@ export class DatepickerComponent implements OnInit, OnChanges {
   /** template 顯示都用timestamp 操作 */
   /** 會拿到當天日期的起始時間 不是當下要注意 */
   @ViewChild('dates') dates: ElementRef;
-  //
-  @Input() taiwanDate = true;
+  /** 民國 or 西元(AD) */
+  @Input() mode = 'ROC';
+  toROC;
   /** 是否顯示民國字樣 */
   @Input() numberOnly = true;
+  /** 西元顯示 */
+  @Input() adType = 'longDate';
   /** 截止日(超過此日期不能選) */
   @Input() closeDate: moment.Moment;
 
   /** 民國範圍年(截止) */
-  @Input() rocEndYear = 200;
-
+  @Input() endYear = 2111;
   /** 民國範圍年(起始) */
-  @Input() rocStartYear = 1;
+  @Input() startYear = 1912;
   /** 可以設定預設日期 */
   @Input() startDay = new Date().valueOf();
   /** 今天日期 for moment 運算，不是最後選定日 */
@@ -64,17 +65,19 @@ export class DatepickerComponent implements OnInit, OnChanges {
     this.dates.nativeElement.classList.remove('active');
   }
   constructor() { }
-
   ngOnInit(): void {
+    this.toROC = this.mode === 'ROC' ? 1911 : 0
     this.today = moment(this.startDay).startOf('d');
     this.selected_date = this.today.valueOf();
-    this.selected_year = this.today.year() - 1911;
+    this.selected_year = this.today.year() - this.toROC;
     this.selected_month = this.today.month();
     this.yearCalendar();
     this.outputDate.emit(this.selected_date);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.mode);
+
     if (changes.startDay) {
       const startDay = changes.startDay.currentValue;
       // 設定選擇日 selectDate()
@@ -166,8 +169,9 @@ export class DatepickerComponent implements OnInit, OnChanges {
 
   /** 產生年份 */
   yearCalendar() {
-    for (let i = this.rocStartYear; i < this.rocEndYear; i++) {
-      this.years.push(i);
+    console.log(this.toROC);
+    for (let i = this.startYear; i < this.endYear; i++) {
+      this.years.push(i - this.toROC);// 民國年記得扣掉
     }
   }
 
@@ -204,6 +208,8 @@ export class DatepickerComponent implements OnInit, OnChanges {
    * 選取日期後，關閉日曆
    */
   selectDate(event: Event, timestamp: number) {
+    console.log('from select', event);
+
     event.stopPropagation();
     // 超出截止日，不能選
     if (this.overCloseDate(timestamp)) {
@@ -211,11 +217,13 @@ export class DatepickerComponent implements OnInit, OnChanges {
     }
     // 非當前選擇月份，不能選
     const mth = moment(timestamp).month();
-    if (mth !== this.selected_month) {
+    if (mth !== this.selected_month && this.overCloseDate(timestamp)) {
       return;
     }
     this.selected_date = timestamp;
     this.today = moment(timestamp);
+    this.selected_year = moment(timestamp).year() - this.toROC;
+    this.selected_month = moment(timestamp).month();
     this.dates.nativeElement.classList.remove('active');
     // 送出選取事件
     this.outputDate.emit(timestamp);
@@ -224,10 +232,10 @@ export class DatepickerComponent implements OnInit, OnChanges {
   /** 選取年份，跳出該年份當月資訊 */
   selectYear(ev: Event) {
     ev.stopPropagation();
-    const year = +(ev.target as HTMLSelectElement).value + 1911;
+    const year = +(ev.target as HTMLSelectElement).value + this.toROC;
     const diffyear = this.today.year() - year;
     this.today.subtract(diffyear, 'year');
-    this.selected_year = this.today.year() - 1911;
+    this.selected_year = this.today.year() - this.toROC;
     this.datesCalendar();
   }
 
@@ -243,7 +251,10 @@ export class DatepickerComponent implements OnInit, OnChanges {
   /** 直接選今天 */
   selectToday(event: Event) {
     event.stopPropagation();
+    console.log('selectToday', event);
+
     const timestamp = moment().startOf('d').valueOf();
+    console.log('selectToday', timestamp);
     this.selectDate(event, timestamp);
   }
 
