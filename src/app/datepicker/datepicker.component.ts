@@ -71,7 +71,7 @@ export class DatepickerComponent implements OnInit, OnChanges {
     this.selected_year = this.today.year() - 1911;
     this.selected_month = this.today.month();
     this.yearCalendar();
-
+    this.outputDate.emit(this.selected_date);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

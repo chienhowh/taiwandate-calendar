@@ -21,13 +21,15 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { BetweenDateComponent } from './between-date/between-date.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ExampleComponent } from './example/example.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DatepickerComponent,
     TaiwanDatePipe,
-    BetweenDateComponent
+    BetweenDateComponent,
+    ExampleComponent
   ],
   imports: [
     BrowserModule,

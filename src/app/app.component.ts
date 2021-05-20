@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
 
 @Component({
@@ -7,8 +8,5 @@ import * as moment from 'moment';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'time';
-  date = moment();
-
 
 }
