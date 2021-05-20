@@ -60,6 +60,8 @@ export class DatepickerComponent implements OnInit, OnChanges {
   /** 日曆顯示模式 eg.年份、日期 */
   calendarMode = 'date';
 
+  // 起迄日操作
+
   @HostListener('document:click') hideCaledar() {
     this.dates.nativeElement.classList.remove('active');
   }
@@ -75,13 +77,14 @@ export class DatepickerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
-    const startDay = changes.startDay.currentValue;
-    this.selected_date = startDay;
-    this.today = moment(startDay);
-    // 送出選取事件
-    this.outputDate.emit(startDay);
+    if (changes.startDay) {
+      const startDay = changes.startDay.currentValue;
+      // 設定選擇日 selectDate()
+      this.selected_date = startDay;
+      this.today = moment(startDay);
+      this.outputDate.emit(startDay); // 送出選取事件
+      console.log('loop?')
+    }
   }
 
   // get finaltime() {
