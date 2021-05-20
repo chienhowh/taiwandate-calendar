@@ -17,13 +17,12 @@
   </div>
 </div>
 
-
 <!-- form start -->
 <div class="show">
   <form [formGroup]="test">
     <input type="text" formControlName="name" />
     <app-datepicker
-      (outputDate)="date($event)"
+      formControlName="date"
     ></app-datepicker>
   </form>
   <div>
