@@ -10,7 +10,8 @@ import * as moment from 'moment';
 })
 export class ExampleComponent implements OnInit {
   title = 'time';
-  date1 = moment();
+  /** 截止日 */
+  closeDate = moment();
   test = new FormGroup({
     name: new FormControl(''),
     date: new FormControl('')

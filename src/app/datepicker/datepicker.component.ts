@@ -57,8 +57,6 @@ export class DatepickerComponent implements OnInit, OnChanges {
 
   // 中文週
   weekZh = ['日', 'ㄧ', '二', '三', '四', '五', '六'];
-  /** 日曆顯示模式 eg.年份、日期 */
-  calendarMode = 'date';
 
   // 起迄日操作
 
@@ -245,10 +243,10 @@ export class DatepickerComponent implements OnInit, OnChanges {
   /** 直接選今天 */
   selectToday(event: Event) {
     event.stopPropagation();
-    const timestamp = new Date().valueOf();
+    const timestamp = moment().startOf('d').valueOf();
     this.selectDate(event, timestamp);
-    this.calendarMode = 'date';
   }
+
   stopPropagation(event: Event) {
     event.stopPropagation();
   }
