@@ -1,3 +1,4 @@
+import { StartendService } from './../between-date/startend.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import * as moment from 'moment';
@@ -9,12 +10,14 @@ import * as moment from 'moment';
 })
 export class ExampleComponent implements OnInit {
   title = 'time';
-  date1 = moment();
+  /** 截止日 */
+  closeDate = moment();
   test = new FormGroup({
     name: new FormControl(''),
     date: new FormControl('')
   });
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
