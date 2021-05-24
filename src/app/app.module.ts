@@ -30,7 +30,7 @@ import { ExampleComponent } from './example/example.component';
     DatepickerComponent,
     TaiwanDatePipe,
     BetweenDateComponent,
-    ExampleComponent
+    ExampleComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,11 +45,10 @@ import { ExampleComponent } from './example/example.component';
     NgbModule,
     NzIconModule,
     NzInputModule,
-    NzSelectModule
-  ], schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
+    NzSelectModule,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [{ provide: NZ_I18N, useValue: zh_TW }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

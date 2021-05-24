@@ -2,11 +2,8 @@
   <!-- 日期format -->
   <!-- 最終選定 start -->
   <div class="selected-date" (click)="toggleCalendar($event)">
-    <ng-container *ngIf="mode === 'ROC'">
-      {{ selected_date | taiwanDate: "YMD":numberOnly }}
-    </ng-container>
-    <ng-container *ngIf="mode === 'AD'">
-      {{ selected_date | date: adType }}
+    <ng-container>
+      {{ (selected_date | taiwanDate: "YMD":numberOnly) || "請選擇日期" }}
     </ng-container>
   </div>
   <!-- 最終選定 end -->
@@ -16,51 +13,49 @@
     <!-- header start -->
     <div class="header-box">
       <div class="years">
-        <nz-select name="year" (click)="stopPropagation($event)" (ngModelChange)="selectYear($event)"
-          [(ngModel)]="selected_year" [nzSize]="'small'" [nzDropdownClassName]="'merc-year-select'"
-          style="width: 78px;">
+        <select
+          name="year"
+          id=""
+          (click)="stopPropagation($event)"
+          (change)="selectYear($event)"
+          [(ngModel)]="selected_year"
+        >
           <ng-container *ngFor="let year of years">
-            <nz-option [nzValue]="year" [nzLabel]="year + '年'"></nz-option>
+            <option [value]="year">{{ year }}年</option>
           </ng-container>
-        </nz-select>
-        <!-- <select name="year" id="" (click)="stopPropagation($event)" (change)="selectYear($event)"
-        [(ngModel)]="selected_year">
-        <ng-container *ngFor="let year of years">
-          <option [value]="year">{{ year }}年</option>
-        </ng-container>
-      </select> -->
+        </select>
       </div>
       <div class="months">
-        <nz-select name="month" (click)="stopPropagation($event)" (ngModelChange)="selectMonth($event)"
-          [(ngModel)]="selected_month" [nzSize]="'small'" style="width: 75px;">
-          <ng-container *ngFor="let month of months">
-            <nz-option [nzValue]="month" [nzLabel]="month + 1 + '月'"></nz-option>
-          </ng-container>
-        </nz-select>
-
-        <!-- <select name="month" id="" (click)="stopPropagation($event)" (ngModelChange)="selectMonth($event)"
-          [(ngModel)]="selected_month">
+        <select
+          name="month"
+          id=""
+          (click)="stopPropagation($event)"
+          (change)="selectMonth($event)"
+          [(ngModel)]="selected_month"
+        >
           <ng-container *ngFor="let month of months">
             <option [value]="month">{{ month + 1 }}月</option>
           </ng-container>
-        </select> -->
+        </select>
       </div>
       <div class="move">
         <span class="arrow-btn" (click)="prevMth($event)">&lt;</span>
         <span class="arrow-btn" (click)="nextMth($event)">&gt;</span>
       </div>
     </div>
-    <hr class="hr">
     <!-- choose date start -->
-    <div style="padding: 0 3px;">
-      <div class="weeks">
-        <div class="week" *ngFor="let week of weekZh">{{ week }}</div>
-      </div>
-      <div class="days">
-        <div class="day" (click)="selectDate($event, day)" *ngFor="let day of days"
-          [class.not-present]="!presentMth(day) || overCloseDate(day)" [class.selected]="presentDate(day)">
-          {{ day | date: "d" }}
-        </div>
+    <div class="weeks">
+      <div class="week" *ngFor="let week of weekZh">{{ week }}</div>
+    </div>
+    <div class="days">
+      <div
+        class="day"
+        (click)="selectDate($event, day)"
+        *ngFor="let day of days"
+        [class.not-present]="!presentMth(day) || overCloseDate(day)"
+        [class.selected]="presentDate(day)"
+      >
+        {{ day | date: "d" }}
       </div>
     </div>
     <!-- 日期日曆 end -->
@@ -70,3 +65,4 @@
   </div>
   <!-- calendar end -->
 </div>
+<!-- {{finaltime}} -->

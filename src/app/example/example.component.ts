@@ -6,7 +6,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-example',
   templateUrl: './example.component.html',
-  styleUrls: ['./example.component.scss']
+  styleUrls: ['./example.component.scss'],
 })
 export class ExampleComponent implements OnInit {
   title = 'time';
@@ -14,22 +14,13 @@ export class ExampleComponent implements OnInit {
   closeDate = moment();
   test = new FormGroup({
     name: new FormControl(''),
-    date: new FormControl('')
+    date: new FormControl(''),
   });
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
-
+  ngOnInit(): void {}
 
   showForm() {
     console.log(this.test.value);
-
   }
-  date(ev) {
-    this.test.get('date').setValue(ev);
-  }
-
 }
